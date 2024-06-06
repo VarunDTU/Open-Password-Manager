@@ -14,7 +14,6 @@ import {
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
-
 export default function NewNavbar() {
   const router = useRouter();
   const logout = async () => {
@@ -36,13 +35,13 @@ export default function NewNavbar() {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="/dashboard">
             Dashboard
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
           <Link href="#" aria-current="page" color="secondary">
-            Customers
+            How this works?
           </Link>
         </NavbarItem>
         <NavbarItem>

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const EncryptedPasswords = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  encryptedUserId: { type: String, required: true },
   encryptedPasswordString: { type: String, required: true },
 });
 const UserEncryptedPasswords =
