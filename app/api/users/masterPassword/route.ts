@@ -8,30 +8,66 @@ export async function POST(req: NextRequest) {
   try {
     const cookieStore = cookies();
     const token = cookieStore.get("token");
-    const dataString = jwt.decode(token.value, { complete: true }).payload;
-    const data = JSON.parse(typeof dataString === "string" ? dataString : "{}");
-    //response.cookies.get("token");
-    if (data.MasterPassword || data.MasterPassword === true) {
-      console.log(data);
-      return NextResponse.json(
-        { message: "masterPassword already exist" },
-        { status: 401 }
-      );
+    var data = jwt.decode(token.value, { complete: true }).payload;
+    if (typeof data === "string") {
+      return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
+    const { masterPassword } = await req.json();
+
     const doc = await User.findOneAndUpdate(
       { _id: data.id },
       { MasterPassword: true }
     );
 
-    const jwt_token = jwt.sign(data, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    data = {
+      ...data,
+      MasterPassword: true,
+      masterPasswordString: masterPassword,
+    };
+    const jwt_token = jwt.sign(data, process.env.JWT_SECRET);
     cookieStore.set("token", jwt_token, { httpOnly: true });
+
+    return NextResponse.json(
+      {
+        message: "MasterPassword saved successfully",
+        sucess: true,
+      },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.log(error);
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+export async function GET(req: NextRequest) {
+  try {
+    const cookieStore = cookies();
+    const token = cookieStore.get("token");
+    var data = jwt.decode(token.value, { complete: true }).payload;
+    if (typeof data === "string") {
+      return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+    }
+
+    if (!data.MasterPassword || !data.masterPasswordString) {
+      //console.log(data);
+      return NextResponse.json(
+        {
+          message: "masterPassword does not exist for this account",
+          success: false,
+        },
+        { status: 401 }
+      );
+    }
+
     const response = NextResponse.json({
-      message: "MasterPassword saved successfully",
+      message: "MasterPassword passed successfully",
       sucess: true,
     });
-    return NextResponse.json({ message: response }, { status: 200 });
+
+    return NextResponse.json(
+      { message: response, data: data.masterPasswordString },
+      { status: 200 }
+    );
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({ message: error.message }, { status: 500 });

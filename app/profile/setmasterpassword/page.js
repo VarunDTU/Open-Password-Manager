@@ -27,7 +27,8 @@ export default function Page() {
       const userData = await axios.post("/api/users/masterpassword", {
         masterPassword: password.password,
       });
-      console.log(userData);
+      toast(userData.data.message);
+      console.log(userData.data.message);
     } catch (e) {
       console.log(e);
       toast(e.response?.data?.message || e.message);

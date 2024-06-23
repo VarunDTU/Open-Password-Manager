@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
       email: user.email,
       username: user.userName,
       role: user.role,
+      MasterPassword: user.MasterPassword,
     };
     const token = jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: "1d",
