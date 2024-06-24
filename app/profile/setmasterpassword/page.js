@@ -22,16 +22,18 @@ export default function Page() {
 
   const setMasterpassword = async () => {
     try {
-      if (!password.password || !password.confirmPassword)
-        return toast("Please fill all the fields");
-      if (password.password !== password.confirmPassword)
-        return toast("Passwords do not match");
-      const masterPassword=password.password
+      if (!password.password || !password.confirmPassword) {
+        toast("Please fill all the fields");
+        return;
+      }
+      if (password.password !== password.confirmPassword) {
+        toast("Passwords do not match");
+        return;
+      }
       axios.defaults.baseURL = process.env.DOMAIN;
       const userData = await axios.post("/api/users/masterpassword", {
         masterPassword: password.password,
       });
-      console.log(userData)
       toast.success(userData.data.message);
       router.push("/dashboard");
     } catch (e) {
