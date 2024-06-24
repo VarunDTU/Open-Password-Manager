@@ -10,9 +10,11 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 export default function Page() {
+  const router = useRouter();
   const [password, setpassword] = useState({
     password: "",
     confirmPassword: "",
@@ -28,7 +30,7 @@ export default function Page() {
         masterPassword: password.password,
       });
       toast(userData.data.message);
-      console.log(userData.data.message);
+      router.push("/dashboard");
     } catch (e) {
       console.log(e);
       toast(e.response?.data?.message || e.message);

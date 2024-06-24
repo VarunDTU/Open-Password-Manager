@@ -40,8 +40,12 @@ export default function NewNavbar() {
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link href="#" aria-current="page" color="secondary">
-            How this works?
+          <Link
+            href="/profile/setmasterpassword"
+            aria-current="page"
+            color="secondary"
+          >
+            Set MasterPassword
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -65,12 +69,12 @@ export default function NewNavbar() {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
+            <DropdownItem key="settings">
+              <Link href="/profile">Settings</Link>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
+            <DropdownItem key="team_settings" href="/profile/setmasterpassword">
+              set masterPassword
+            </DropdownItem>
             <DropdownItem key="analytics">Analytics</DropdownItem>
             <DropdownItem key="system">System</DropdownItem>
             <DropdownItem key="configurations">Configurations</DropdownItem>

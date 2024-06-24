@@ -10,6 +10,7 @@ export async function getMasterPassword() {
         return response.data.data;
       });
 
+    //console.log(MasterPassword);
     return MasterPassword;
   } catch (error) {
     console.error(error);
@@ -28,7 +29,8 @@ function getKeyFromSecret(secretCode) {
 // Decryption function
 export async function decrypt(encryptedText) {
   try {
-    const Mpass = getMasterPassword().toString();
+    const data = await getMasterPassword();
+    const Mpass = data.masterPasswordString.toString();
     const secretCode = getKeyFromSecret(Mpass);
     const iv = Buffer.from(encryptedText.iv, "hex");
     const encryptedTextBytes = Buffer.from(encryptedText.encryptedData, "hex");
@@ -43,13 +45,15 @@ export async function decrypt(encryptedText) {
 
     return decrypted.toString();
   } catch (error) {
-    return { message: "error", error };
+    return { message: "internal error or wrong masterpassword", error };
   }
 }
 
 export async function encrypt(text) {
   try {
-    const Mpass = getMasterPassword().toString();
+    const data = await getMasterPassword();
+    const Mpass = data.masterPasswordString.toString();
+
     const secretCode = getKeyFromSecret(Mpass);
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(
@@ -59,9 +63,28 @@ export async function encrypt(text) {
     );
     let encrypted = cipher.update(text);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
-
-    return encrypted.toString("hex");
+    return {
+      password: encrypted.toString("hex"),
+      userId: data.userId.toString(),
+      iv: iv,
+    };
   } catch (error) {
-    return { message: "error", error };
+    return { message: "error ", error };
   }
+}
+
+export async function getpasswords() {
+  const data = await axios.get("/api/users/passwords");
+  //console.log(data.data.data.encryptedPasswordString.length);
+  const passwords = [];
+
+  for (let i = 0; i < data.data.data.encryptedPasswordString.length; i++) {
+    const decryptedPassword = await decrypt({
+      encryptedData: data.data.data.encryptedPasswordString[i],
+      iv: data.data.data.iv[i],
+    });
+    passwords.push(decryptedPassword);
+  }
+
+  return passwords;
 }

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import validator from "validator";
 import { connect } from "../../../../db/dbConfig";
 import User from "../../../../models/userModel";
 connect();
@@ -18,7 +19,15 @@ export async function POST(req: NextRequest) {
       { _id: data.id },
       { MasterPassword: true }
     );
-
+    if (
+      !validator.isAlphanumeric(masterPassword) ||
+      !validator.isLength(masterPassword, { max: 10 })
+    ) {
+      return NextResponse.json(
+        { message: "Invalid Master Password or longer than 10" },
+        { status: 401 }
+      );
+    }
     data = {
       ...data,
       MasterPassword: true,
@@ -48,7 +57,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
 
-    if (!data.MasterPassword || !data.masterPasswordString) {
+    if (!data.MasterPassword || !data.masterPasswordString || !data.id) {
       //console.log(data);
       return NextResponse.json(
         {
@@ -65,7 +74,13 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: response, data: data.masterPasswordString },
+      {
+        message: response,
+        data: {
+          userId: data.id,
+          masterPasswordString: data.masterPasswordString,
+        },
+      },
       { status: 200 }
     );
   } catch (error: any) {
