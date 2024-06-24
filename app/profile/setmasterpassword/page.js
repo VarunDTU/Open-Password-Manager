@@ -30,7 +30,6 @@ export default function Page() {
         toast("Passwords do not match");
         return;
       }
-      axios.defaults.baseURL = process.env.DOMAIN;
       const userData = await axios.post("/api/users/masterpassword", {
         masterPassword: password.password,
       });

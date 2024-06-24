@@ -99,6 +99,9 @@ export default function Page() {
             >
               SignUp
             </button>
+            <Link href={"/login"} className="text-blue-500" key="flat">
+              Login
+            </Link>
           </div>
         </div>
       )}

@@ -2,6 +2,7 @@
 
 import { Input } from "@nextui-org/react";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -77,6 +78,9 @@ export default function Page() {
           >
             Sign in
           </button>
+          <Link href={"/signup"} className="text-blue-500" key="flat">
+            SignUp
+          </Link>
         </div>
       )}
     </div>
