@@ -2,6 +2,7 @@
 
 import { Input } from "@nextui-org/react";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
