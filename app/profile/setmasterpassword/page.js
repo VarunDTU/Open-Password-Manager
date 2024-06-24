@@ -26,14 +26,14 @@ export default function Page() {
         return toast("Please fill all the fields");
       if (password.password !== password.confirmPassword)
         return toast("Passwords do not match");
-      const userData = await axios.post("/api/users/masterpassword", {
-        masterPassword: password.password,
-      });
-      toast(userData.data.message);
+      const masterPassword=password.password
+      const userData = await axios.post("/api/users/masterpassword", masterPassword);
+      console.log(userData)
+      toast.success(userData.data.message);
       router.push("/dashboard");
     } catch (e) {
       console.log(e);
-      toast(e.response?.data?.message || e.message);
+      toast.error(e.response?.data?.message || e.message);
     }
   };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

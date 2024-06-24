@@ -3,9 +3,7 @@ export async function connect() {
   try {
     mongoose.connect(process.env.MONGO_URL!);
     const connection = mongoose.connection;
-    connection.on("connected", () =>
-      console.error("connected to the database")
-    );
+    connection.on("connected", () => console.log("connected to the database"));
     connection.on("error", (err) => {
       console.error(err);
       process.exit();
