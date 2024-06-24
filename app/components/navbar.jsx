@@ -73,11 +73,9 @@ export default function NewNavbar() {
               <Link href="/profile">Settings</Link>
             </DropdownItem>
             <DropdownItem key="team_settings" href="/profile/setmasterpassword">
-              set masterPassword
+              Set MasterPassword
             </DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
+
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
             <DropdownItem key="logout" color="danger" onClick={logout}>
               Log Out
