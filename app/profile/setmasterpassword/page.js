@@ -27,7 +27,10 @@ export default function Page() {
       if (password.password !== password.confirmPassword)
         return toast("Passwords do not match");
       const masterPassword=password.password
-      const userData = await axios.post("/api/users/masterpassword", masterPassword);
+      axios.defaults.baseURL = process.env.DOMAIN;
+      const userData = await axios.post("/api/users/masterpassword", {
+        masterPassword: password.password,
+      });
       console.log(userData)
       toast.success(userData.data.message);
       router.push("/dashboard");
