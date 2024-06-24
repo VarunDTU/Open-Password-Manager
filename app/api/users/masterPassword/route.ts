@@ -6,6 +6,7 @@ import { connect } from "../../../../db/dbConfig";
 import User from "../../../../models/userModel";
 connect();
 export async function POST(req: NextRequest) {
+  console.log("POST");
   try {
     const cookieStore = cookies();
     const token = cookieStore.get("token");
