@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 export default function NewNavbar() {
   const router = useRouter();
@@ -25,6 +26,16 @@ export default function NewNavbar() {
       toast.error(e.message);
     }
   };
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    try {
+      const data = axios.get("/api/users/nav").then((response) => {
+        setUser(response.data.data);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
   return (
     <Navbar>
       <Toaster></Toaster>
@@ -51,7 +62,7 @@ export default function NewNavbar() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent as="div" justify="end">
+      <NavbarContent as="div" justify="end" className="">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar
@@ -73,9 +84,21 @@ export default function NewNavbar() {
             </DropdownItem>
 
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger" onClick={logout}>
-              Log Out
-            </DropdownItem>
+
+            {!user ? (
+              <DropdownItem key="login" href="/login">
+                Login
+              </DropdownItem>
+            ) : (
+              <DropdownItem
+                key="logout"
+                color="danger"
+                className={user ? "visible" : "hidden"}
+                onClick={logout}
+              >
+                Log Out
+              </DropdownItem>
+            )}
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
