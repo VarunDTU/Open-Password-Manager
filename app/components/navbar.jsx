@@ -40,11 +40,7 @@ export default function NewNavbar() {
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link
-            href="/profile/masterpassword"
-            aria-current="page"
-            color="secondary"
-          >
+          <Link href="/masterpassword" aria-current="page" color="secondary">
             Set MasterPassword
           </Link>
         </NavbarItem>
@@ -72,7 +68,7 @@ export default function NewNavbar() {
             <DropdownItem key="settings">
               <Link href="/profile">Settings</Link>
             </DropdownItem>
-            <DropdownItem key="team_settings" href="/profile/masterpassword">
+            <DropdownItem key="team_settings" href="/masterpassword">
               Set MasterPassword
             </DropdownItem>
 
