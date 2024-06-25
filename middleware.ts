@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get("token") || "";
   if (isPublicPath && token) {
     return NextResponse.redirect(
-      new URL("/profile/setmasterpassword", request.nextUrl)
+      new URL("/profile/masterpassword", request.nextUrl)
     );
   }
   if (!isPublicPath && !token) {
@@ -22,6 +22,6 @@ export const config = {
     "/signup",
     "/dashboard",
     "/profile",
-    "/profile/setmasterpassword",
+    "/profile/masterpassword",
   ],
 };
